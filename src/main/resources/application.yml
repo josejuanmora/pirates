@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/pirates
+    username: oneeyed
+    password: 123456
+    driverClassName: org.postgresql.Driver
+
+  main:
+    allow-bean-definition-overriding: true

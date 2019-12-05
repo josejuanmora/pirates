@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: pirates
+
+logging:
+  path: /data/logs/
+  config: classpath:logback-spring.xml
+

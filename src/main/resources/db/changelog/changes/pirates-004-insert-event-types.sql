@@ -1,0 +1,6 @@
+--liquibase formatted sql
+
+--changeset jjuan:4
+
+INSERT INTO EVENT_TYPES VALUES (0, 'ARRIVAL_TO_PORT');
+INSERT INTO EVENT_TYPES VALUES (1, 'DEPARTURE_FROM_PORT');
