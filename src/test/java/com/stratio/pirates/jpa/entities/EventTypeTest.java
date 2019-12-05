@@ -1,11 +1,9 @@
 package com.stratio.pirates.jpa.entities;
 
-import com.stratio.pirates.jpa.entities.*;
+import static com.stratio.pirates.BuilderHelper.*;
 
 import org.testng.Assert;
 import org.testng.annotations.*;
-
-import java.util.Arrays;
 
 /**
  * Tests to check the functionality of the EventType class.
@@ -78,21 +76,5 @@ public class EventTypeTest {
         port = buildPort(stJamesPort, departureEvent);
         ship = buildShip(blackPearlShip, departureEvent);
         Assert.assertFalse(EventType.DEPARTURE_FROM_PORT.isEventAllowed(ship, port, defaultStock));
-    }
-
-    private Ship buildShip(final int id, final Event... events) {
-        return Ship.builder().id(id).events(Arrays.asList(events)).build();
-    }
-
-    private Event buildEvent(final EventType type, final int portId, final int shipId,  final Stock stock) {
-        return Event.builder().eventType(type).port(buildPort(portId)).ship(buildShip(shipId)).stock(stock).build();
-    }
-
-    private Port buildPort(final int id, final Event... events) {
-        return Port.builder().id(id).events(Arrays.asList(events)).build();
-    }
-
-    private Stock buildStock(final int barrelsOfRum, final int goldCoins) {
-        return new Stock(barrelsOfRum, goldCoins);
     }
 }
