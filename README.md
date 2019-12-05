@@ -19,6 +19,7 @@ it will initialize the database with some sample ships and ports.
 
 ## REST API
 On the docs folder, you will find the Postman configuration file that contains all the endpoints that the Pirates REST API contains. There are three different endpoints:
+
 1. Retrieve ship history. The endpoint is `http://localhost:8080/api/v1_0/ship/{id}` where id is the id of the ship, using the GET http method. It displays basic information of the ship as well as the
 history of events (arrivals and departures from ports). It supports an optional *eventType* parameter that can have the *DEPARTURE_FROM_PORT* and *ARRIVAL_TO_PORT* in order to
 filter events from that type. Returns a 200 http status code if ok.
