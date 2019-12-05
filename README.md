@@ -20,15 +20,15 @@ it will initialize the database with some sample ships and ports.
 ## REST API
 On the docs folder, you will find the Postman configuration file that contains all the endpoints that the Pirates REST API contains. There are three different endpoints:
 
-1. Retrieve ship history. The endpoint is `http://localhost:8080/api/v1_0/ship/{id}` where id is the id of the ship, using the GET http method. It displays basic information of the ship as well as the
-history of events (arrivals and departures from ports). It supports an optional *eventType* parameter that can have the *DEPARTURE_FROM_PORT* and *ARRIVAL_TO_PORT* in order to
-filter events from that type. Returns a 200 http status code if ok.
-2. Retrieve port history. The endpoint is `http://localhost:8080/api/v1_0/port/{id}` where id is the id of the port, using the GET http method. It displays basic information of the port as well as the
-history of events (arrivals and departures of ships). It supports an optional *eventType* parameter that can have the *DEPARTURE_FROM_PORT* and *ARRIVAL_TO_PORT* in order to
-filter events from that type. Returns a 200 http status code if ok.
-3. Create an event. The endpoint is `http://localhost:8080/api/v1_0/ship/{id}/event` where id is the id of the ship, using the PUT http method. The body has to include the following information:
+1. **Retrieve ship history**. The endpoint is `http://localhost:8080/api/v1_0/ship/{id}` where *id* is the id of the ship, using the GET http method. It displays basic information of the ship as well as the
+history of events (arrivals and departures from ports). It supports an optional *eventType* parameter that supports both *DEPARTURE_FROM_PORT* and *ARRIVAL_TO_PORT* in order to
+filter events from that type. Returns a 200 http status code if ok, 404 http status if no ship is found.
+2. **Retrieve port history**. The endpoint is `http://localhost:8080/api/v1_0/port/{id}` where *id* is the id of the port, using the GET http method. It displays basic information of the port as well as the
+history of events (arrivals and departures of ships). It supports an optional *eventType* parameter that supports both *DEPARTURE_FROM_PORT* and *ARRIVAL_TO_PORT* in order to
+filter events from that type. Returns a 200 http status code if ok, 404 http status if no port is found.
+3. **Create an event**. The endpoint is `http://localhost:8080/api/v1_0/ship/{id}/event` where id is the id of the ship, using the PUT http method. The body has to include the following information:
 `{ "portId": 1, "eventType": "ARRIVAL_TO_PORT", "stock" : { "barrelsOfRum": 1,"goldCoins": 1 } }`
 Returns a 201 http status code if ok and a 400 http status code if the information is not valid.
 
 ## Known constraints
-It is assumed that the ship is on the high seas for the first time. That is, the first event to be created for a ship has to be a ARRIVAL_TO_PORT event.
+It is assumed that the ship is on the high seas for the first time. That is, the first event to be created for a ship has to be a *ARRIVAL_TO_PORT* event.
