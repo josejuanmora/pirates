@@ -10,3 +10,7 @@ spring:
 
   main:
     allow-bean-definition-overriding: true
+
+server:
+  error:
+    include-stacktrace: never

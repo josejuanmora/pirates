@@ -11,8 +11,8 @@ import java.util.function.Predicate;
  */
 @AllArgsConstructor
 public enum EventType {
-    ARRIVAL_TO_PORT((i -> i), ((s,p) -> s.isOnTheHighSeas()), (s,p) -> true),
-    DEPARTURE_FROM_PORT((i -> -i), ((s,p) -> s.isAtPort(p)), (s, p) -> canStockBeDelivered(s, p.getStock()) )
+    ARRIVAL_TO_PORT((i -> i), ((s,p) -> s.isOnTheHighSeas()), (s,p) -> isStockValidForArrival(s)),
+    DEPARTURE_FROM_PORT((i -> -i), ((s,p) -> s.isAtPort(p)), (s, p) -> isStockValidForDeparture(s, p.getStock()) )
     ;
 
     private Function<Integer, Integer> stockCalculator;
@@ -50,12 +50,16 @@ public enum EventType {
      * @param portStock the stock of the port
      * @return true in such case
      */
-    private static boolean canStockBeDelivered(final Stock stock, final Stock portStock) {
-        return isValidStockValue(stock.getBarrelsOfRum(), portStock.getBarrelsOfRum()) &&
-                isValidStockValue(stock.getGoldCoins(), portStock.getGoldCoins());
+    private static boolean isStockValidForDeparture(final Stock stock, final Stock portStock) {
+        return isStockValidForDeparture(stock.getBarrelsOfRum(), portStock.getBarrelsOfRum()) &&
+                isStockValidForDeparture(stock.getGoldCoins(), portStock.getGoldCoins());
     }
 
-    private static boolean isValidStockValue(final int stockValue, final int portValue) {
+    private static boolean isStockValidForDeparture(final int stockValue, final int portValue) {
         return stockValue>=0 && stockValue<=portValue;
+    }
+    
+    private static boolean isStockValidForArrival(final Stock stock) {
+        return stock.getGoldCoins()>=0 && stock.getBarrelsOfRum()>=0;
     }
 }
