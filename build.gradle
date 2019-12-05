@@ -29,8 +29,8 @@ repositories {
 }
 
 
-sourceCompatibility = 1.12
-targetCompatibility = 1.12
+sourceCompatibility = 1.10
+targetCompatibility = 1.10
 
 ext['liquibase.version'] = '3.8.2'
 
@@ -63,7 +63,7 @@ dependencies {
     compile("org.glassfish.jaxb:jaxb-runtime:2.3.2")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile("junit:junit:4.12")
+    testCompile("org.testng:testng:7.0.0")
 
     runtime("org.postgresql:postgresql:42.2.5")
     runtime("net.logstash.logback:logstash-logback-encoder:4.11")
@@ -84,6 +84,12 @@ bootRun {
 
 jar {
     baseName "pirates"
+}
+
+test {
+    useTestNG() {
+        useDefaultListeners = true
+    }
 }
 
 liquibase {

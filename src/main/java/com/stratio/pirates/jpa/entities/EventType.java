@@ -58,7 +58,7 @@ public enum EventType {
     private static boolean isStockValidForDeparture(final int stockValue, final int portValue) {
         return stockValue>=0 && stockValue<=portValue;
     }
-    
+
     private static boolean isStockValidForArrival(final Stock stock) {
         return stock.getGoldCoins()>=0 && stock.getBarrelsOfRum()>=0;
     }

@@ -61,6 +61,8 @@ public class Ship implements Serializable {
      */
     public boolean isAtPort(final Port port) {
         return events.stream().findFirst().
-                filter(e -> e.getEventType().equals(EventType.ARRIVAL_TO_PORT) && e.getPort().equals(port)).isPresent();
+                filter(e ->
+                    e.getEventType().equals(EventType.ARRIVAL_TO_PORT) &&
+                    e.getPort().getId() == port.getId()).isPresent();
     }
 }

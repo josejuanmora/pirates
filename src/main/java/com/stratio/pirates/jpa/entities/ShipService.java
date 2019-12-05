@@ -1,6 +1,5 @@
-package com.stratio.pirates.services;
+package com.stratio.pirates.jpa.entities;
 
-import com.stratio.pirates.jpa.entities.*;
 import com.stratio.pirates.jpa.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

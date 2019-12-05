@@ -3,7 +3,7 @@ package com.stratio.pirates.controllers;
 import com.stratio.pirates.Application;
 import com.stratio.pirates.dto.*;
 import com.stratio.pirates.jpa.entities.*;
-import com.stratio.pirates.services.ShipService;
+import com.stratio.pirates.jpa.entities.ShipService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
