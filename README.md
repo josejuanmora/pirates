@@ -3,9 +3,9 @@
 ## Introduction and prerequisites
 Pirates is a REST API implemented in Java using Spring Boot. It uses Gradle as its build system and PostgreSQL as its database engine. It will need then
 the following software to be installed in order to run properly the application:
-* Java 12
-* Gradle 5.4.1
-* PostgreSQL 11.3
+    * Java 12
+    * Gradle 5.4.1
+    * PostgreSQL 11.3
 
 ## How to run the Pirates application
 1. First of all, the database has to be configured:
@@ -18,4 +18,16 @@ it will initialize the database with some sample ships and ports.
 4. The application will start up on the 8080 port. Check on the browser that the application works correctly with the following URL: `http://localhost:8080/api/v1_0/port/1`.
 
 ## REST API
-On the docs folder, you will find the Postman configuration file that contains all the endpoints that the Pirates REST API contains. They are three different endpoints:
+On the docs folder, you will find the Postman configuration file that contains all the endpoints that the Pirates REST API contains. There are three different endpoints:
+    * Retrieve ship history. The endpoint is `http://localhost:8080/api/v1_0/ship/{id}` where id is the id of the ship, using the GET http method. It displays basic information of the ship as well as the
+    history of events (arrivals and departures from ports). It supports an optional *eventType* parameter that can have the *DEPARTURE_FROM_PORT* and *ARRIVAL_TO_PORT* in order to
+    filter events from that type. Returns a 200 http status code if ok.
+    * Retrieve port history. The endpoint is `http://localhost:8080/api/v1_0/port/{id}` where id is the id of the port, using the GET http method. It displays basic information of the port as well as the
+    history of events (arrivals and departures of ships). It supports an optional *eventType* parameter that can have the *DEPARTURE_FROM_PORT* and *ARRIVAL_TO_PORT* in order to
+    filter events from that type. Returns a 200 http status code if ok.
+    * Create an event. The endpoint is `http://localhost:8080/api/v1_0/ship/{id}/event` where id is the id of the ship, using the PUT http method. The body has to include the following information:
+    `{ "portId": 1, "eventType": "ARRIVAL_TO_PORT", "stock" : { "barrelsOfRum": 1,"goldCoins": 1 } }`
+    Returns a 201 http status code if ok and a 400 http status code if the information is not valid.
+
+## Known constraints
+    * It is assumed that the ship is on the high seas for the first time. That is, the first event to be created for a ship has to be a ARRIVAL_TO_PORT event.
