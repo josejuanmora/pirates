@@ -50,7 +50,7 @@ public class Ship implements Serializable {
      * @return true in such case
      */
     public boolean isOnTheHighSeas() {
-        return events.stream().findFirst().
+        return events.size()==0 || events.stream().findFirst().
                 filter(e -> e.getEventType().equals(EventType.DEPARTURE_FROM_PORT)).isPresent();
     }
 

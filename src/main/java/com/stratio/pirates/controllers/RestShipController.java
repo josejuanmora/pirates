@@ -64,6 +64,7 @@ public class RestShipController {
             @RequestBody final CreateEventDTO eventDTO) {
 
         ResponseEntity result =  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
         Optional<Event> optional =
             shipService.createShipEvent(
                 id,
