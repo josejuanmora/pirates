@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 @AllArgsConstructor
 public enum EventType {
     ARRIVAL_TO_PORT((i -> i), ((s,p) -> s.isOnTheHighSeas()), (s,p) -> true),
-    DEPARTURE_FROM_PORT((i -> -i), ((s,p) -> s.isAtPort(p)), (s, p) -> canStockBeDelivered(s, p) )
+    DEPARTURE_FROM_PORT((i -> -i), ((s,p) -> s.isAtPort(p)), (s, p) -> canStockBeDelivered(s, p.getStock()) )
     ;
 
     private Function<Integer, Integer> stockCalculator;
@@ -46,13 +46,13 @@ public enum EventType {
     /**
      * Checks whether the port can deliver the stock to the ship. It is check that the
      * value that the ship wants to take is minor to the value of the stock the port has.
-     * @param stock the stock
-     * @param port the port
+     * @param stock the stock of the ship
+     * @param portStock the stock of the port
      * @return true in such case
      */
-    private static boolean canStockBeDelivered(final Stock stock, final Port port) {
-        return isValidStockValue(stock.getBarrelsOfRum(), port.getBarrelsOfRum()) &&
-                isValidStockValue(stock.getGoldCoins(), stock.getGoldCoins());
+    private static boolean canStockBeDelivered(final Stock stock, final Stock portStock) {
+        return isValidStockValue(stock.getBarrelsOfRum(), portStock.getBarrelsOfRum()) &&
+                isValidStockValue(stock.getGoldCoins(), portStock.getGoldCoins());
     }
 
     private static boolean isValidStockValue(final int stockValue, final int portValue) {

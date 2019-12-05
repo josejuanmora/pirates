@@ -15,9 +15,6 @@ public class CreateEventDTO {
 
     private long portId;
 
-    //TODO
-    private int barrelsOfRum;
-
-    private int goldCoins;
+    private StockDTO stock;
 
 }

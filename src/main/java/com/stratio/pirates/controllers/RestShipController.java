@@ -69,8 +69,7 @@ public class RestShipController {
                 id,
                 eventDTO.getPortId(),
                 eventDTO.getEventType(),
-                eventDTO.getBarrelsOfRum(),
-                eventDTO.getGoldCoins());
+                toStock(eventDTO.getStock()));
         if(optional.isPresent()) {
             result = new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -90,10 +89,12 @@ public class RestShipController {
                 name(port.getName()).build();
     }
 
-    private StockDTO toStockDTO(final Event event) {
-        return StockDTO.builder().
-                barrelsOfRum(event.getBarrelsOfRum()).
-                goldCoins(event.getGoldCoins()).build();
+    private StockDTO toStockDTO(final Stock stock) {
+        return StockDTO.builder().barrelsOfRum(stock.getBarrelsOfRum()).goldCoins(stock.getGoldCoins()).build();
+    }
+
+    private Stock toStock(final StockDTO stockDTO) {
+        return new Stock(stockDTO.getBarrelsOfRum(), stockDTO.getGoldCoins());
     }
 
     private List<EventDTO> toEventDTO(final List<Event> events, final EventType eventType) {
@@ -106,7 +107,7 @@ public class RestShipController {
         return EventDTO.builder().
                 eventType(event.getEventType()).
                 port(toPortDTO(event.getPort())).
-                stock(toStockDTO(event)).
+                stock(toStockDTO(event.getStock())).
                 creationDate(from(event.getCreationDate())).build();
     }
 

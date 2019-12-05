@@ -43,11 +43,11 @@ public class Event implements Serializable {
     @Column(name = "type_id", nullable = false, updatable = false)
     private EventType eventType;
 
-    @Column(name="barrels_of_rum", nullable = false, updatable = false)
-    private int barrelsOfRum;
-
-    @Column(name="gold_coins", nullable = false, updatable = false)
-    private int goldCoins;
+    @AttributeOverrides( {
+        @AttributeOverride(name="barrelsOfRum", column = @Column(name="barrelsOfRum") ),
+        @AttributeOverride(name="goldCoins", column = @Column(name="goldCoins") )
+    })
+    private Stock stock;
 
     @CreatedDate
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)

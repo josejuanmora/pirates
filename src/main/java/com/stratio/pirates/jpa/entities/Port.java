@@ -40,18 +40,18 @@ public class Port implements Serializable {
     private List<Event> events;
 
     /**
-     * Returns the total barrels of rum in stock.
-     * @return the total number
+     * Returns the total stock of the port.
+     * @return the total stock
      */
-    public int getBarrelsOfRum() {
-        return events.stream().mapToInt(e -> e.getEventType().changeValueForStockCalculation(e.getBarrelsOfRum())).sum();
+    public Stock getStock() {
+        int barrelsOfRum =
+            events.stream().mapToInt(e -> e.getEventType().
+                changeValueForStockCalculation(e.getStock().getBarrelsOfRum())).sum();
+        int goldCoins =
+            events.stream().mapToInt(e -> e.getEventType().
+                changeValueForStockCalculation(e.getStock().getGoldCoins())).sum();
+
+        return new Stock(barrelsOfRum, goldCoins);
     }
 
-    /**
-     * Returns the total number of gold coins in stock.
-     * @return the total number
-     */
-    public int getGoldCoins() {
-        return events.stream().mapToInt(e -> e.getEventType().changeValueForStockCalculation(e.getGoldCoins())).sum();
-    }
 }

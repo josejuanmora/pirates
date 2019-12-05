@@ -5,10 +5,7 @@ import com.stratio.pirates.dto.PortDTO;
 import com.stratio.pirates.dto.EventDTO;
 import com.stratio.pirates.dto.ShipDTO;
 import com.stratio.pirates.dto.StockDTO;
-import com.stratio.pirates.jpa.entities.Event;
-import com.stratio.pirates.jpa.entities.EventType;
-import com.stratio.pirates.jpa.entities.Port;
-import com.stratio.pirates.jpa.entities.Ship;
+import com.stratio.pirates.jpa.entities.*;
 import com.stratio.pirates.services.PortService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,21 +61,15 @@ public class RestPortController {
         return PortDTO.builder().
                 id(port.getId()).
                 name(port.getName()).
-                stock(toStockDTO(port)).
+                stock(toStockDTO(port.getStock())).
                 events(toEventDTO(port.getEvents(), eventType)).
                 build();
     }
 
-    private StockDTO toStockDTO(final Port port) {
+    private StockDTO toStockDTO(final Stock stock) {
         return StockDTO.builder().
-                barrelsOfRum(port.getBarrelsOfRum()).
-                goldCoins(port.getGoldCoins()).build();
-    }
-
-    private StockDTO toStockDTO(final Event event) {
-        return StockDTO.builder().
-                barrelsOfRum(event.getBarrelsOfRum()).
-                goldCoins(event.getGoldCoins()).build();
+                barrelsOfRum(stock.getBarrelsOfRum()).
+                goldCoins(stock.getGoldCoins()).build();
     }
 
     private List<EventDTO> toEventDTO(final List<Event> events, final EventType eventType) {
@@ -91,7 +82,7 @@ public class RestPortController {
         return EventDTO.builder().
                 eventType(event.getEventType()).
                 ship(toShipDTO(event.getShip())).
-                stock(toStockDTO(event)).
+                stock(toStockDTO(event.getStock())).
                 creationDate(from(event.getCreationDate())).build();
     }
 

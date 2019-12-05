@@ -54,9 +54,8 @@ public class ShipService {
      * Creates the event.
      * @param shipId the ship identifier
      * @param portId the port identifier
-     * @param barrelsOfRum the number of barrels of rum
-     * @param goldCoins the number of gold coins
      * @param eventType the type of event
+     * @param stock the stock
      * @return the created event, if created
      */
     @Transactional
@@ -64,8 +63,7 @@ public class ShipService {
             final long shipId,
             final long portId,
             final EventType eventType,
-            final int barrelsOfRum,
-            final int goldCoins) {
+            final Stock stock) {
 
         Optional<Event> result = Optional.empty();
 
@@ -75,15 +73,13 @@ public class ShipService {
         if(optionalShip.isPresent() && optionalPort.isPresent()) {
             Ship ship = optionalShip.get();
             Port port = optionalPort.get();
-            Stock stock = Stock.builder().barrelsOfRum(barrelsOfRum).goldCoins(goldCoins).build();
             if(eventType.isEventAllowed(ship, port, stock)) {
                 Event event =
                     Event.builder().
                         ship(ship).
                         port(port).
                         eventType(eventType).
-                        barrelsOfRum(stock.getBarrelsOfRum()).
-                        goldCoins(stock.getGoldCoins()).
+                        stock(stock).
                         creationDate(LocalDateTime.now()).build();
                 result = Optional.of(eventRepository.save(event));
             }
