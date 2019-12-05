@@ -3,6 +3,7 @@
 ## Introduction and prerequisites
 Pirates is a REST API implemented in Java using Spring Boot. It uses Gradle as its build system and PostgreSQL as its database engine. It will need then
 the following software to be installed in order to run properly the application:
+
     * Java 12
     * Gradle 5.4.1
     * PostgreSQL 11.3
@@ -27,7 +28,7 @@ filter events from that type. Returns a 200 http status code if ok, 404 http sta
 history of events (arrivals and departures of ships). It supports an optional *eventType* parameter that supports both *DEPARTURE_FROM_PORT* and *ARRIVAL_TO_PORT* in order to
 filter events from that type. Returns a 200 http status code if ok, 404 http status if no port is found.
 3. **Create an event**. The endpoint is `http://localhost:8080/api/v1_0/ship/{id}/event` where id is the id of the ship, using the PUT http method. The body has to include the following information:
-`{ "portId": 1, "eventType": "ARRIVAL_TO_PORT", "stock" : { "barrelsOfRum": 1,"goldCoins": 1 } }`
+`{ "portId": {portId}, "eventType": "{ARRIVAL_TO_PORT|DEPARTURE_FROM_PORT}", "stock" : { "barrelsOfRum": {barrels} ,"goldCoins": {coins}  } }`
 Returns a 201 http status code if ok and a 400 http status code if the information is not valid.
 
 ## Known constraints
