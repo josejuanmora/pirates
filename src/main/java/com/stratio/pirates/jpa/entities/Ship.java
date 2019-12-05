@@ -37,15 +37,6 @@ public class Ship implements Serializable {
     @Column(name="name", nullable = false, updatable = false)
     private String name;
 
-    @Column(name="barrels_of_rum", nullable = false, updatable = false)
-    private int barrelsOfRum;
-
-    @Column(name="gold_coins", nullable = false, updatable = false)
-    private int goldCoins;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    private Port currentPort;
-
     @CreatedDate
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime creationDate;
@@ -53,4 +44,23 @@ public class Ship implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ship")
     @OrderBy("id desc")
     private List<Event> events;
+
+    /**
+     * Checks whether the ship is on high seas.
+     * @return true in such case
+     */
+    public boolean isOnTheHighSeas() {
+        return events.stream().findFirst().
+                filter(e -> e.getEventType().equals(EventType.DEPARTURE_FROM_PORT)).isPresent();
+    }
+
+    /**
+     * Checks whether the ship is at the given port.
+     * @param port the port
+     * @return true in such case
+     */
+    public boolean isAtPort(final Port port) {
+        return events.stream().findFirst().
+                filter(e -> e.getEventType().equals(EventType.ARRIVAL_TO_PORT) && e.getPort().equals(port)).isPresent();
+    }
 }

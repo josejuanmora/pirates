@@ -54,6 +54,8 @@ public class ShipService {
      * Creates the event.
      * @param shipId the ship identifier
      * @param portId the port identifier
+     * @param barrelsOfRum the number of barrels of rum
+     * @param goldCoins the number of gold coins
      * @param eventType the type of event
      * @return the created event, if created
      */
@@ -61,21 +63,30 @@ public class ShipService {
     public Optional<Event> createShipEvent(
             final long shipId,
             final long portId,
-            final EventType eventType) {
+            final EventType eventType,
+            final int barrelsOfRum,
+            final int goldCoins) {
 
         Optional<Event> result = Optional.empty();
 
-        Optional<Ship> ship = findShip(shipId);
-        Optional<Port> port = portRepository.findById(portId);
+        Optional<Ship> optionalShip = findShip(shipId);
+        Optional<Port> optionalPort = portRepository.findById(portId);
 
-        if(ship.isPresent() && port.isPresent()) {
-            Event event =
-                Event.builder().
-                    ship(ship.get()).
-                    port(port.get()).
-                    eventType(eventType).
-                    creationDate(LocalDateTime.now()).build();
-            result = Optional.of(eventRepository.save(event));
+        if(optionalShip.isPresent() && optionalPort.isPresent()) {
+            Ship ship = optionalShip.get();
+            Port port = optionalPort.get();
+            Stock stock = Stock.builder().barrelsOfRum(barrelsOfRum).goldCoins(goldCoins).build();
+            if(eventType.isEventAllowed(ship, port, stock)) {
+                Event event =
+                    Event.builder().
+                        ship(ship).
+                        port(port).
+                        eventType(eventType).
+                        barrelsOfRum(stock.getBarrelsOfRum()).
+                        goldCoins(stock.getGoldCoins()).
+                        creationDate(LocalDateTime.now()).build();
+                result = Optional.of(eventRepository.save(event));
+            }
         }
         return result;
     }

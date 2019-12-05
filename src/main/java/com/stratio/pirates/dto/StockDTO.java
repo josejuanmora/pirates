@@ -7,16 +7,13 @@ import lombok.Getter;
 import java.util.List;
 
 /**
- * Models the DTO for a ship.
+ * Models the DTO for the stock of a ship or port.
  */
 @Getter
 @Builder
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ShipDTO {
+public class StockDTO {
 
-    private long id;
+    private int barrelsOfRum;
 
-    private String name;
-
-    private List<EventDTO> events;
+    private int goldCoins;
 }

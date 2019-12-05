@@ -35,7 +35,23 @@ public class Port implements Serializable {
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime creationDate;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "currentPort")
-    @OrderBy("id asc")
-    private List<Ship> ships;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "port")
+    @OrderBy("id desc")
+    private List<Event> events;
+
+    /**
+     * Returns the total barrels of rum in stock.
+     * @return the total number
+     */
+    public int getBarrelsOfRum() {
+        return events.stream().mapToInt(e -> e.getEventType().changeValueForStockCalculation(e.getBarrelsOfRum())).sum();
+    }
+
+    /**
+     * Returns the total number of gold coins in stock.
+     * @return the total number
+     */
+    public int getGoldCoins() {
+        return events.stream().mapToInt(e -> e.getEventType().changeValueForStockCalculation(e.getGoldCoins())).sum();
+    }
 }

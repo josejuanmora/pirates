@@ -9,15 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Controller that manages ships.
@@ -42,13 +40,14 @@ public class RestShipController {
      * @return the http status
      */
     @RequestMapping(value = BASE_URI + "{id}" , method = RequestMethod.GET)
-    public ResponseEntity findShip(@PathVariable final long id) {
+    public ResponseEntity findShip(
+            @PathVariable final long id,
+            @RequestParam(value = "eventType", required=false) final EventType eventType) {
 
         ResponseEntity result = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         Optional<Ship> optional = shipService.findShip(id);
         if(optional.isPresent()) {
-            Ship ship = optional.get();
-            result = new ResponseEntity<>(toShipDTO(ship), HttpStatus.OK);
+            result = new ResponseEntity<>(toShipDTO(optional.get(), eventType), HttpStatus.OK);
         }
         return result;
     }
@@ -64,16 +63,51 @@ public class RestShipController {
             @PathVariable final long id,
             @RequestBody final CreateEventDTO eventDTO) {
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        ResponseEntity result =  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Optional<Event> optional =
+            shipService.createShipEvent(
+                id,
+                eventDTO.getPortId(),
+                eventDTO.getEventType(),
+                eventDTO.getBarrelsOfRum(),
+                eventDTO.getGoldCoins());
+        if(optional.isPresent()) {
+            result = new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return result;
     }
 
-    private ShipDTO toShipDTO(final Ship ship) {
+    private ShipDTO toShipDTO(final Ship ship, final EventType eventType) {
         return ShipDTO.builder().
                 id(ship.getId()).
                 name(ship.getName()).
-                barrelsOfRum(ship.getBarrelsOfRum()).
-                goldCoins(ship.getGoldCoins()).
-                registrationDate(from(ship.getCreationDate())).build();
+                events(toEventDTO(ship.getEvents(), eventType)).build();
+    }
+
+    private PortDTO toPortDTO(final Port port) {
+        return PortDTO.builder().
+                id(port.getId()).
+                name(port.getName()).build();
+    }
+
+    private StockDTO toStockDTO(final Event event) {
+        return StockDTO.builder().
+                barrelsOfRum(event.getBarrelsOfRum()).
+                goldCoins(event.getGoldCoins()).build();
+    }
+
+    private List<EventDTO> toEventDTO(final List<Event> events, final EventType eventType) {
+        return events.stream().
+                filter(e -> (eventType== null || eventType.equals(e.getEventType()))).
+                map(e -> toEventDTO(e)).collect(Collectors.toList());
+    }
+
+    private EventDTO toEventDTO(final Event event) {
+        return EventDTO.builder().
+                eventType(event.getEventType()).
+                port(toPortDTO(event.getPort())).
+                stock(toStockDTO(event)).
+                creationDate(from(event.getCreationDate())).build();
     }
 
     private Date from(final LocalDateTime localDateTime) {
