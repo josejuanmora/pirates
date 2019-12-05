@@ -1,5 +1,7 @@
 package com.stratio.pirates.controllers;
 
+import static com.stratio.pirates.DTOHelper.*;
+
 import com.stratio.pirates.Application;
 import com.stratio.pirates.dto.*;
 import com.stratio.pirates.jpa.entities.*;
@@ -11,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.*;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -90,10 +90,6 @@ public class RestShipController {
                 name(port.getName()).build();
     }
 
-    private StockDTO toStockDTO(final Stock stock) {
-        return StockDTO.builder().barrelsOfRum(stock.getBarrelsOfRum()).goldCoins(stock.getGoldCoins()).build();
-    }
-
     private Stock toStock(final StockDTO stockDTO) {
         return new Stock(stockDTO.getBarrelsOfRum(), stockDTO.getGoldCoins());
     }
@@ -110,14 +106,5 @@ public class RestShipController {
                 port(toPortDTO(event.getPort())).
                 stock(toStockDTO(event.getStock())).
                 creationDate(from(event.getCreationDate())).build();
-    }
-
-    private Date from(final LocalDateTime localDateTime) {
-        final ZonedDateTime zdt = localDateTime.atZone(Application.DEFAULT_ZONE_ID);
-        return Date.from(zdt.toInstant());
-    }
-
-    private LocalDate from(final Date dateToFormat) {
-        return dateToFormat.toInstant().atZone(Application.DEFAULT_ZONE_ID).toLocalDate();
     }
 }

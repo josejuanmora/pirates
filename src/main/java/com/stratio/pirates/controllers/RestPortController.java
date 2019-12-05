@@ -1,10 +1,11 @@
 package com.stratio.pirates.controllers;
 
+import static com.stratio.pirates.DTOHelper.*;
+
 import com.stratio.pirates.Application;
 import com.stratio.pirates.dto.PortDTO;
 import com.stratio.pirates.dto.EventDTO;
 import com.stratio.pirates.dto.ShipDTO;
-import com.stratio.pirates.dto.StockDTO;
 import com.stratio.pirates.jpa.entities.*;
 import com.stratio.pirates.jpa.entities.PortService;
 import org.slf4j.Logger;
@@ -14,9 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,12 +63,6 @@ public class RestPortController {
                 build();
     }
 
-    private StockDTO toStockDTO(final Stock stock) {
-        return StockDTO.builder().
-                barrelsOfRum(stock.getBarrelsOfRum()).
-                goldCoins(stock.getGoldCoins()).build();
-    }
-
     private List<EventDTO> toEventDTO(final List<Event> events, final EventType eventType) {
         return events.stream().
                 filter(e -> (eventType== null || eventType.equals(e.getEventType()))).
@@ -89,10 +81,5 @@ public class RestPortController {
         return ShipDTO.builder().
                 id(ship.getId()).
                 name(ship.getName()).build();
-    }
-
-    private Date from(final LocalDateTime localDateTime) {
-        final ZonedDateTime zdt = localDateTime.atZone(Application.DEFAULT_ZONE_ID);
-        return Date.from(zdt.toInstant());
     }
 }

@@ -11,7 +11,7 @@ import java.util.Arrays;
  * Tests to check the functionality of the Port class.
  */
 public class PortTest {
-    
+
     @Test
     public void shouldCreateEvent() {
         int blackPearlShip = 1;
