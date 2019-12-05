@@ -32,4 +32,6 @@ filter events from that type. Returns a 200 http status code if ok, 404 http sta
 Returns a 201 http status code if ok and a 400 http status code if the information is not valid.
 
 ## Known constraints
-It is assumed that the ship is on the high seas for the first time. That is, the first event to be created for a ship has to be a *ARRIVAL_TO_PORT* event.
+It is assumed that the ship is on the high seas for the first time. That is, the first event to be created for a ship has to be a *ARRIVAL_TO_PORT* event. Moreover, it has been considered that no other goods
+different than barrels of rum or gold coins should be supported. If that would be the case, it may be considered a different way to store the goods to avoid undesired modifications of the
+data model.
