@@ -8,7 +8,7 @@ the following software to be installed in order to run properly the application:
     * Gradle 5.4.1
     * PostgreSQL 11.3
 
-## How to run the Pirates application
+## Running the Pirates application
 1. First of all, the database has to be configured:
     * run `createdb 'pirates'` to create the Pirates database on the PostgreSQL instance.
     * run `psql -h localhost -d pirates` to access the database.
