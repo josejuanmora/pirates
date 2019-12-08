@@ -2,24 +2,25 @@ package com.stratio.pirates.jpa.entities;
 
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * Enumerates all the possible event types.
  */
 @AllArgsConstructor
 public enum EventType {
-    ARRIVAL_TO_PORT((i -> i), ((s,p) -> s.isOnTheHighSeas()), (s,p) -> isStockValidForArrival(s)),
-    DEPARTURE_FROM_PORT((i -> -i), ((s,p) -> s.isAtPort(p)), (s, p) -> isStockValidForDeparture(s, p.getStock()) )
+    ARRIVAL_TO_PORT((i -> i), ((s,p) -> s.isOnTheHighSeas()), (s,p) -> isQtyValidForArrival(s)),
+    DEPARTURE_FROM_PORT((i -> -i), ((s,p) -> s.isAtPort(p)), (s, p) -> isQtyValidForDeparture(s, p.getGoods()) )
     ;
 
     private Function<Integer, Integer> stockCalculator;
 
     private BiFunction<Ship, Port, Boolean> locationValidator;
 
-    private BiFunction<Stock, Port, Boolean> stockValidator;
+    private BiFunction<List<Good>, Port, Boolean> stockValidator;
 
     /**
      * Returns the proper value for calculating the total stock. In the case
@@ -36,30 +37,39 @@ public enum EventType {
      * Tests whether the event can be applied to the ship and port.
      * @param ship the ship
      * @param port the port
-     * @param stock the stock
+     * @param goods the goods
      * @return true in such case
      */
-    public boolean isEventAllowed(final Ship ship, final Port port, final Stock stock) {
-        return locationValidator.apply(ship, port) && stockValidator.apply(stock, port);
+    public boolean isEventAllowed(final Ship ship, final Port port, final List<Good> goods) {
+        return locationValidator.apply(ship, port) && stockValidator.apply(goods, port);
     }
 
     /**
      * Checks whether the port can deliver the stock to the ship. It is check that the
      * value that the ship wants to take is minor to the value of the stock the port has.
-     * @param stock the stock of the ship
-     * @param portStock the stock of the port
+     * @param goods the stock of the ship
+     * @param portGoods the stock of the port
      * @return true in such case
      */
-    private static boolean isStockValidForDeparture(final Stock stock, final Stock portStock) {
-        return isStockValidForDeparture(stock.getBarrelsOfRum(), portStock.getBarrelsOfRum()) &&
-                isStockValidForDeparture(stock.getGoldCoins(), portStock.getGoldCoins());
+    private static boolean isQtyValidForDeparture(final List<Good> goods, final List<Good> portGoods) {
+        return goods.stream().allMatch(g -> isQtyValidForDeparture(g, portGoods));
     }
 
-    private static boolean isStockValidForDeparture(final int stockValue, final int portValue) {
-        return stockValue>=0 && stockValue<=portValue;
+    private static boolean isQtyValidForDeparture(final Good good, final List<Good> portGoods) {
+        boolean result = false;
+
+        if(good.getQty()>0) {
+            Optional<Good> portGood =
+                    portGoods.stream().filter(pg -> pg.getGoodType().equals(good.getGoodType())).findAny();
+
+            if(portGood.isPresent()) {
+                result = good.getQty()>=0 && good.getQty()<=portGood.get().getQty();
+            }
+        }
+        return result;
     }
 
-    private static boolean isStockValidForArrival(final Stock stock) {
-        return stock.getGoldCoins()>=0 && stock.getBarrelsOfRum()>=0;
+    private static boolean isQtyValidForArrival(final List<Good> goods) {
+        return goods.stream().allMatch(g -> g.getQty()>0);
     }
 }

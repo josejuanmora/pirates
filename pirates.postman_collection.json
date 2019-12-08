@@ -1,0 +1,226 @@
+{
+	"info": {
+		"_postman_id": "9da5ab27-0799-4616-8e7f-b79d6c8210ee",
+		"name": "pirates",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get ship",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"portId\": 1,\n    \"eventType\": \"ARRIVAL_TO_PORT\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1_0/ship/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1_0",
+						"ship",
+						"1"
+					]
+				},
+				"description": "Retrieves information from a given ship. The id of the ship should be included in the URL."
+			},
+			"response": []
+		},
+		{
+			"name": "get ship filtered by event type",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"portId\": 1,\n    \"eventType\": \"ARRIVAL_TO_PORT\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1_0/ship/1?eventType=DEPARTURE_FROM_PORT",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1_0",
+						"ship",
+						"1"
+					],
+					"query": [
+						{
+							"key": "eventType",
+							"value": "DEPARTURE_FROM_PORT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get port",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"portId\": 1,\n    \"eventType\": \"ARRIVAL_TO_PORT\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1_0/port/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1_0",
+						"port",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get port filtered by event type",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"portId\": 1,\n    \"eventType\": \"ARRIVAL_TO_PORT\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1_0/port/1?eventType=DEPARTURE_FROM_PORT",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1_0",
+						"port",
+						"1"
+					],
+					"query": [
+						{
+							"key": "eventType",
+							"value": "DEPARTURE_FROM_PORT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "put event",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"portId\": 2,\n    \"eventType\": \"ARRIVAL_TO_PORT\",\n    \"goods\" : [ \n    \t{ \"goodType\" : \"BARRELS_OF_RUM\", \"qty\" : 1 },\n    \t{ \"goodType\" : \"GOLD_COINS\", \"qty\" : 3 }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1_0/ship/1/event",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1_0",
+						"ship",
+						"1",
+						"event"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

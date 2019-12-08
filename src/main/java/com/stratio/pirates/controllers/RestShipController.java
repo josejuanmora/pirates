@@ -5,7 +5,7 @@ import static com.stratio.pirates.DTOHelper.*;
 import com.stratio.pirates.Application;
 import com.stratio.pirates.dto.*;
 import com.stratio.pirates.jpa.entities.*;
-import com.stratio.pirates.jpa.entities.ShipService;
+import com.stratio.pirates.services.ShipService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ public class RestShipController {
                 id,
                 eventDTO.getPortId(),
                 eventDTO.getEventType(),
-                toStock(eventDTO.getStock()));
+                toGoods(eventDTO.getGoods()));
         if(optional.isPresent()) {
             result = new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -90,8 +90,9 @@ public class RestShipController {
                 name(port.getName()).build();
     }
 
-    private Stock toStock(final StockDTO stockDTO) {
-        return new Stock(stockDTO.getBarrelsOfRum(), stockDTO.getGoldCoins());
+    private List<Good> toGoods(final List<GoodDTO> goods) {
+        return goods.stream().
+                map(g -> Good.builder().goodType(g.getGoodType()).qty(g.getQty()).build()).collect(Collectors.toList());
     }
 
     private List<EventDTO> toEventDTO(final List<Event> events, final EventType eventType) {
@@ -104,7 +105,7 @@ public class RestShipController {
         return EventDTO.builder().
                 eventType(event.getEventType()).
                 port(toPortDTO(event.getPort())).
-                stock(toStockDTO(event.getStock())).
+                goods(toGoodDTO(event.getGoods())).
                 creationDate(from(event.getCreationDate())).build();
     }
 }

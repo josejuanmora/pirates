@@ -13,6 +13,7 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Represents an event.
@@ -43,11 +44,9 @@ public class Event implements Serializable {
     @Column(name = "type_id", nullable = false, updatable = false)
     private EventType eventType;
 
-    @AttributeOverrides( {
-        @AttributeOverride(name="barrelsOfRum", column = @Column(name="barrelsOfRum") ),
-        @AttributeOverride(name="goldCoins", column = @Column(name="goldCoins") )
-    })
-    private Stock stock;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
+    @OrderBy("id asc")
+    private List<Good> goods;
 
     @CreatedDate
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Contains the information needed to display an event.
@@ -22,7 +23,7 @@ public class EventDTO {
 
     private ShipDTO ship;
 
-    private StockDTO stock;
+    private List<GoodDTO> goods;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
     private Date creationDate;
