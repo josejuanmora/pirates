@@ -1,5 +1,6 @@
-package com.stratio.pirates.jpa.entities;
+package com.stratio.pirates.services;
 
+import com.stratio.pirates.jpa.entities.*;
 import com.stratio.pirates.jpa.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ public class ShipService {
 
     private EventRepository eventRepository;
 
+    private GoodRepository goodRepository;
+
     @Autowired
     public void setShipRepository(final ShipRepository theShipRepository) {
         this.shipRepository = theShipRepository;
@@ -37,6 +40,11 @@ public class ShipService {
     @Autowired
     public void setEventRepository(final EventRepository theEventRepository) {
         this.eventRepository = theEventRepository;
+    }
+
+    @Autowired
+    public void setGoodRepository(final GoodRepository theGoodRepository) {
+        this.goodRepository = theGoodRepository;
     }
 
     public ShipService() {
@@ -54,7 +62,7 @@ public class ShipService {
      * @param shipId the ship identifier
      * @param portId the port identifier
      * @param eventType the type of event
-     * @param stock the stock
+     * @param goods the stock
      * @return the created event, if created
      */
     @Transactional
@@ -62,7 +70,7 @@ public class ShipService {
             final long shipId,
             final long portId,
             final EventType eventType,
-            final Stock stock) {
+            final List<Good> goods) {
 
         Optional<Event> result = Optional.empty();
 
@@ -72,17 +80,23 @@ public class ShipService {
         if(optionalShip.isPresent() && optionalPort.isPresent()) {
             Ship ship = optionalShip.get();
             Port port = optionalPort.get();
-            if(eventType.isEventAllowed(ship, port, stock)) {
+            if(eventType.isEventAllowed(ship, port, goods)) {
                 Event event =
                     Event.builder().
                         ship(ship).
                         port(port).
                         eventType(eventType).
-                        stock(stock).
                         creationDate(LocalDateTime.now()).build();
-                result = Optional.of(eventRepository.save(event));
+                Event persistedEvent = eventRepository.save(event);
+                goods.stream().forEach(g -> saveGood(persistedEvent, g));
+                result = Optional.of(persistedEvent);
             }
         }
         return result;
+    }
+
+    private void saveGood(final Event event, final Good good) {
+        good.setEvent(event);
+        goodRepository.save(good);
     }
 }

@@ -5,6 +5,8 @@ import static com.stratio.pirates.BuilderHelper.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.util.List;
+
 /**
  * Tests to check the functionality of the EventType class.
  */
@@ -14,7 +16,7 @@ public class EventTypeTest {
     private int stJamesPort = 1;
     private int beauPort = 2;
 
-    private Stock defaultStock = buildStock(1, 1);
+    private List<Good> defaultStock = buildGoods(1, 1);
 
     @Test
     public void shouldCreateEvent() {
@@ -35,26 +37,26 @@ public class EventTypeTest {
 
     @Test
     public void ShouldNotCreateEventBecauseOfInvalidStock() {
-        Stock stock = buildStock(-1, -1);
+        List<Good> goods = buildGoods(-1, -1);
         Port port = buildPort(stJamesPort);
         Ship ship = buildShip(blackPearlShip);
-        Assert.assertFalse(EventType.ARRIVAL_TO_PORT.isEventAllowed(ship, port, stock));
+        Assert.assertFalse(EventType.ARRIVAL_TO_PORT.isEventAllowed(ship, port, goods));
 
         Event arrivalEvent = buildEvent(EventType.ARRIVAL_TO_PORT, stJamesPort, blackPearlShip, defaultStock);
-        stock = buildStock(-1, -1);
+        goods = buildGoods(-1, -1);
         port = buildPort(stJamesPort, arrivalEvent);
         ship = buildShip(blackPearlShip, arrivalEvent);
-        Assert.assertFalse(EventType.DEPARTURE_FROM_PORT.isEventAllowed(ship, port, stock));
+        Assert.assertFalse(EventType.DEPARTURE_FROM_PORT.isEventAllowed(ship, port, goods));
 
-        stock = buildStock(1, 2);
+        goods = buildGoods(1, 2);
         port = buildPort(stJamesPort, arrivalEvent);
         ship = buildShip(blackPearlShip, arrivalEvent);
-        Assert.assertFalse(EventType.DEPARTURE_FROM_PORT.isEventAllowed(ship, port, stock));
+        Assert.assertFalse(EventType.DEPARTURE_FROM_PORT.isEventAllowed(ship, port, goods));
 
-        stock = buildStock(2, 1);
+        goods = buildGoods(2, 1);
         port = buildPort(stJamesPort, arrivalEvent);
         ship = buildShip(blackPearlShip, arrivalEvent);
-        Assert.assertFalse(EventType.DEPARTURE_FROM_PORT.isEventAllowed(ship, port, stock));
+        Assert.assertFalse(EventType.DEPARTURE_FROM_PORT.isEventAllowed(ship, port, goods));
     }
 
     @Test

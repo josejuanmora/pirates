@@ -1,19 +1,20 @@
 package com.stratio.pirates.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.stratio.pirates.jpa.entities.GoodType;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
 
 /**
- * Models the DTO for the stock of a ship or port.
+ * Models the DTO a good for the ship or port.
  */
 @Getter
 @Builder
-public class StockDTO {
+public class GoodDTO {
 
-    private int barrelsOfRum;
+    private GoodType goodType;
 
-    private int goldCoins;
+    private int qty;
 }

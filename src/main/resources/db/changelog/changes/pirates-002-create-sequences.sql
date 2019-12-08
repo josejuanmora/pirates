@@ -7,3 +7,5 @@ create sequence SEQ_SHIPS;
 create sequence SEQ_PORTS;
 
 create sequence SEQ_EVENTS;
+
+create sequence SEQ_GOODS;

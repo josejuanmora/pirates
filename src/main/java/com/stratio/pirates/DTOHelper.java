@@ -1,10 +1,7 @@
 package com.stratio.pirates;
 
-import com.stratio.pirates.dto.EventDTO;
-import com.stratio.pirates.dto.PortDTO;
-import com.stratio.pirates.dto.ShipDTO;
-import com.stratio.pirates.dto.StockDTO;
-import com.stratio.pirates.jpa.entities.*;
+import com.stratio.pirates.dto.GoodDTO;
+import com.stratio.pirates.jpa.entities.Good;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -17,10 +14,12 @@ import java.util.stream.Collectors;
  */
 public class DTOHelper {
 
-    public static StockDTO toStockDTO(final Stock stock) {
-        return StockDTO.builder().
-                barrelsOfRum(stock.getBarrelsOfRum()).
-                goldCoins(stock.getGoldCoins()).build();
+    public static List<GoodDTO> toGoodDTO(final List<Good> goods) {
+        return goods.stream().map(g -> toGoodDTO(g)).collect(Collectors.toList());
+    }
+
+    private static GoodDTO toGoodDTO(final Good good) {
+        return GoodDTO.builder().goodType(good.getGoodType()).qty(good.getQty()).build();
     }
 
     public static Date from(final LocalDateTime localDateTime) {

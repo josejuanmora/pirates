@@ -1,13 +1,19 @@
 package com.stratio.pirates.jpa.entities;
 
 import lombok.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Represents a port.
@@ -21,6 +27,8 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 public class Port implements Serializable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Port.class);
 
     @Id
     @SequenceGenerator(name="seq_ports",sequenceName="seq_ports", allocationSize = 1)
@@ -40,18 +48,31 @@ public class Port implements Serializable {
     private List<Event> events;
 
     /**
-     * Returns the total stock of the port.
-     * @return the total stock
+     * Returns the total goods of the port.
+     * @return the total goods
      */
-    public Stock getStock() {
-        int barrelsOfRum =
-            events.stream().mapToInt(e -> e.getEventType().
-                changeValueForStockCalculation(e.getStock().getBarrelsOfRum())).sum();
-        int goldCoins =
-            events.stream().mapToInt(e -> e.getEventType().
-                changeValueForStockCalculation(e.getStock().getGoldCoins())).sum();
+    public List<Good> getGoods() {
+        Map<GoodType, Integer> aggregated = initAggregatedMap();
 
-        return new Stock(barrelsOfRum, goldCoins);
+        events.stream().forEach(e-> agreggateValuesFromEvent(e, aggregated));
+        return aggregated.keySet().stream().
+                map(k -> Good.builder().goodType(k).qty(aggregated.get(k)).build()).collect(Collectors.toList());
     }
 
+    private void agreggateValuesFromEvent(final Event event, final Map<GoodType, Integer> aggregated) {
+        event.getGoods().stream().forEach(g -> aggregateValueFromEvent(event.getEventType(), g, aggregated));
+    }
+
+    private void aggregateValueFromEvent(
+        final EventType eventType, final Good good, final Map<GoodType, Integer> aggregated) {
+
+        Integer currentValue = aggregated.get(good.getGoodType());
+        aggregated.put(good.getGoodType(), currentValue + eventType.changeValueForStockCalculation(good.getQty()));
+    }
+
+    private Map<GoodType, Integer> initAggregatedMap() {
+        Map<GoodType, Integer> result = new HashMap<>();
+        for(GoodType goodType : GoodType.values()) { result.put(goodType, 0); }
+        return result;
+    }
 }

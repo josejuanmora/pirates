@@ -7,7 +7,7 @@ import com.stratio.pirates.dto.PortDTO;
 import com.stratio.pirates.dto.EventDTO;
 import com.stratio.pirates.dto.ShipDTO;
 import com.stratio.pirates.jpa.entities.*;
-import com.stratio.pirates.jpa.entities.PortService;
+import com.stratio.pirates.services.PortService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class RestPortController {
         return PortDTO.builder().
                 id(port.getId()).
                 name(port.getName()).
-                stock(toStockDTO(port.getStock())).
+                goods(toGoodDTO(port.getGoods())).
                 events(toEventDTO(port.getEvents(), eventType)).
                 build();
     }
@@ -73,7 +73,7 @@ public class RestPortController {
         return EventDTO.builder().
                 eventType(event.getEventType()).
                 ship(toShipDTO(event.getShip())).
-                stock(toStockDTO(event.getStock())).
+                goods(toGoodDTO(event.getGoods())).
                 creationDate(from(event.getCreationDate())).build();
     }
 
