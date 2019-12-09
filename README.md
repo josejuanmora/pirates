@@ -29,7 +29,7 @@ history of events (arrivals and departures of ships). It supports an optional *e
 filter events from that type. Returns a 200 http status code if ok, 404 http status if no port is found.
 3. **Create an event**. The endpoint is `http://localhost:8080/api/v1_0/ship/{id}/event` where id is the id of the ship, using the PUT http method. The body has to include the following information:
 
-`
+```
 {
     "portId": {portId},
     "eventType": "{ARRIVAL_TO_PORT|DEPARTURE_FROM_PORT}",
@@ -37,7 +37,7 @@ filter events from that type. Returns a 200 http status code if ok, 404 http sta
         { "goodType" : "GOLD_COINS|BARRELS_OF_RUM", "qty" : {qty} }
     ]
 }
-`
+```
 Returns a 201 http status code if ok and a 400 http status code if the information is not valid.
 
 ## Known constraints
