@@ -37,7 +37,7 @@ filter events from that type. Returns a 200 http status code if ok, 404 http sta
         { "goodType" : *GOLD_COINS|BARRELS_OF_RUM*, "qty" : *qty* }
     ]
 }
-``
+```
     Returns a 201 http status code if ok and a 400 http status code if the information is not valid.
 
 ## Known constraints
