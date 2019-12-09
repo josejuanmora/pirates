@@ -42,7 +42,8 @@
 						"ship",
 						"1"
 					]
-				}
+				},
+				"description": "Retrieves information from a given ship. The id of the ship should be included in the URL."
 			},
 			"response": []
 		},
@@ -195,7 +196,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"portId\": 1,\n    \"eventType\": \"DEPARTURE_FROM_PORT\",\n    \"stock\" : { \n    \t\"barrelsOfRum\": 1,\n    \t\"goldCoins\": 4\n    }\n}",
+					"raw": "{\n    \"portId\": 2,\n    \"eventType\": \"ARRIVAL_TO_PORT\",\n    \"goods\" : [ \n    \t{ \"goodType\" : \"BARRELS_OF_RUM\", \"qty\" : 1 },\n    \t{ \"goodType\" : \"GOLD_COINS\", \"qty\" : 3 }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
