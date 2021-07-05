@@ -10,7 +10,8 @@ spring:
 
   main:
     allow-bean-definition-overriding: true
-
+  hateoas:
+    use-hal-as-default-json-media-type: false
 server:
   error:
     include-stacktrace: never

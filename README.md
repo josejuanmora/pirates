@@ -12,7 +12,7 @@ the following software to be installed in order to run properly the application:
 1. First of all, the database has to be configured:
     * run `createdb 'pirates'` to create the Pirates database on the PostgreSQL instance.
     * run `psql -h localhost -d pirates` to access the database.
-    * from the database terminal, run `create user oneeyed with encrypted password '123456'` to create the user.
+    * from the database terminal, run `create role oneeyed with login encrypted password '123456'` to create the user.
 2. Clone the project.
 3. From the root directory, run the Pirates application with the `./gradlew bootRun` command. It will automatically deploy all the databases changes using Liquibase and
 it will initialize the database with some sample ships and ports.
