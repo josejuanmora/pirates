@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Controller that manages ports.
@@ -58,6 +59,16 @@ public class RestPortController {
         return result;
     }
 
+    /**
+     * Retrieves all ports.
+     * @return the http status
+     */
+    @RequestMapping(value = BASE_URI , method = RequestMethod.GET)
+    public ResponseEntity findAllPorts() {
+        Iterable<Port> list = portService.findAllPorts();
+        return new ResponseEntity<>(toPortDTOList(list), HttpStatus.OK);
+    }
+
     private PortDTO toPortDTO(final Port port, final EventType eventType) {
         return PortDTO.builder().
                 id(port.getId()).
@@ -85,5 +96,10 @@ public class RestPortController {
         return ShipDTO.builder().
                 id(ship.getId()).
                 name(ship.getName()).build();
+    }
+
+    private List<PortDTO> toPortDTOList(Iterable<Port> ports) {
+        return StreamSupport.stream(ports.spliterator(), false).
+                map(p -> toPortDTO(p, null)).collect(Collectors.toList());
     }
 }

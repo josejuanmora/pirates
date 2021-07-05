@@ -55,7 +55,7 @@ public class RestShipController {
     }
 
     /**
-     * Retrieves the ship by its id.
+     * Retrieves all ships.
      * @return the http status
      */
     @RequestMapping(value = BASE_URI , method = RequestMethod.GET)

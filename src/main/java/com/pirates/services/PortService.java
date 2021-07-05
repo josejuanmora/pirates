@@ -34,4 +34,10 @@ public class PortService {
      */
     public Optional<Port> findPort(final long id) { return portRepository.findById(id); }
 
+    /**
+     * Retrieves the ports.
+     * @return the ports
+     */
+    public Iterable<Port> findAllPorts() { return portRepository.findAll(); }
+
 }
