@@ -61,23 +61,9 @@ public class Ship implements Serializable {
      * @return true in such case
      */
     public boolean isAtPort(final Port port) {
-        Optional<Port> currentPort = getCurrentPort();
-        return currentPort.isPresent() && currentPort.get().getId() == port.getId();
-    }
-
-    /**
-     * Retrieves the current port for a ship
-     * @return the current port, if any
-     */
-    public Optional<Port> getCurrentPort() {
-        Port result = null;
-        if(events.size()>0) {
-            Event lastEvent = events.get(0);
-            result = (lastEvent.getEventType().equals(EventType.ARRIVAL_TO_PORT)) ?
-                    lastEvent.getPort() :
-                    null;
-
-        }
-        return Optional.ofNullable(result);
+        return events.stream().findFirst().
+                filter(e ->
+                    e.getEventType().equals(EventType.ARRIVAL_TO_PORT) &&
+                    e.getPort().getId() == port.getId()).isPresent();
     }
 }

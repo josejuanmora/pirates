@@ -18,7 +18,5 @@ public class ShipDTO {
 
     private String name;
 
-    private PortDTO currentPort;
-
     private List<EventDTO> events;
 }
