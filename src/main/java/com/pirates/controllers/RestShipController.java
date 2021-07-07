@@ -22,7 +22,6 @@ import java.util.stream.StreamSupport;
  * Controller that manages ships.
  */
 @RestController
-@CrossOrigin
 public class RestShipController {
 
     private static final String BASE_URI = Application.BASE_URI + "/ship/";

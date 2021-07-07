@@ -27,7 +27,6 @@ import java.util.stream.StreamSupport;
  * Controller that manages ports.
  */
 @RestController
-@CrossOrigin
 public class RestPortController {
 
     private static final String BASE_URI = Application.BASE_URI + "/port/";
